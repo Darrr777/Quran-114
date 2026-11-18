@@ -1,9 +1,37 @@
 {
-  "name": "Нур — исламское приложение",
-  "short_name": "Нур",
+  "id": "./",
+  "name": "НУР — исламское приложение",
+  "short_name": "НУР",
+  "description": "Время намаза, Коран, азкары и хадис дня",
+  "lang": "ru",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0d211d",
   "theme_color": "#102f28",
-  "description": "Время намаза, Коран, азкары и хадис дня"
+  "categories": [
+    "lifestyle",
+    "books"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }

@@ -1,8 +1,16 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#102f28"><meta name="description" content="Нур — время намаза, Коран, азкары и хадис дня">
-<link rel="manifest" href="manifest.json"><title>Нур — نور</title>
+<meta name="theme-color" content="#102f28">
+<meta name="description" content="Нур — время намаза, Коран, азкары и хадис дня">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="НУР">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<title>Нур — نور</title>
 <style>
 :root{--bg:#0d211d;--p:#15352d;--gold:#d6b56d;--t:#f4f2e9;--m:#b6c6bd;--l:#315448}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#173b30,#0d211d 65%);color:var(--t);font-family:system-ui,-apple-system,sans-serif}
@@ -19,7 +27,10 @@ select,input{background:#0e2821;color:var(--t);border:1px solid var(--l);padding
 #surahReader{display:none}.ayah,.dhikr{padding:13px 0;border-bottom:1px solid var(--l)}.counter{font-size:54px;text-align:center;color:var(--gold);font-weight:700;margin:8px}audio{width:100%;margin:12px 0}footer{text-align:center;color:#8fa69a;font-size:11px;padding:15px}
 @media(min-width:760px){.prayers{grid-template-columns:repeat(6,1fr)}.card{padding:22px}}
 </style></head><body>
-<header><div class="logo">نُور · НУР</div><div class="muted">Твой ежедневный спутник в поклонении</div></header>
+<header><div class="logo">نُور · НУР</div><div class="muted">Твой ежедневный спутник в поклонении</div>
+<button id="installApp" class="secondary" style="margin-top:12px">Установить НУР</button>
+<div id="installHelp" class="muted" style="display:none;margin:9px auto 0;max-width:420px">На iPhone: нажми «Поделиться» в Safari → «На экран Домой» → «Добавить».</div>
+</header>
 <main><nav class="tabs">
 <button class="tab active" data-page="prayer">🕌 Намаз</button><button class="tab" data-page="quran">📖 Коран</button><button class="tab" data-page="azkar">🤲 Азкары</button><button class="tab" data-page="hadith">☀️ Хадис</button>
 </nav>
@@ -73,5 +84,20 @@ let active='morning';function renderAz(){ $('dhikrList').innerHTML=az[active].ma
 let count=Number(localStorage.getItem('noorTasbih')||0);function draw(){ $('count').textContent=count;localStorage.setItem('noorTasbih',count);}$('countBtn').onclick=()=>{count++;draw();};$('resetCount').onclick=()=>{count=0;draw();};draw();
 const hadiths=[["إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ","Поистине, дела оцениваются только по намерениям.","Сахих аль-Бухари, 1; Сахих Муслим, 1907"],["الدِّينُ النَّصِيحَةُ","Религия — это искреннее отношение (наставление).","Сахих Муслим, 55"],["مَنْ لَا يَرْحَمُ لَا يُرْحَمُ","К тому, кто не проявляет милосердия, не проявят милосердия.","Сахих аль-Бухари, 6013; Сахих Муслим, 2319"],["الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ","Мусульманин — тот, от языка и рук которого другие мусульмане находятся в безопасности.","Сахих аль-Бухари, 10; Сахих Муслим, 40"],["لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ","Не уверует никто из вас по-настоящему, пока не станет желать брату того же, чего желает себе.","Сахих аль-Бухари, 13; Сахих Муслим, 45"],["مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ","Пусть тот, кто верует в Аллаха и Последний день, говорит благое или молчит.","Сахих аль-Бухари, 6018; Сахих Муслим, 47"],["الطُّهُورُ شَطْرُ الْإِيمَانِ","Очищение — половина веры.","Сахих Муслим, 223"]];
 let h=hadiths[Math.floor(Date.now()/86400000)%hadiths.length];$('hadithDate').textContent=new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});$('hadithArabic').textContent=h[0];$('hadithText').textContent=h[1];$('hadithSource').textContent=h[2];
-if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+let installPrompt=null;
+const installButton=$('installApp'), installHelp=$('installHelp');
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone=window.matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
+if(isStandalone){installButton.style.display='none';}
+else if(isIOS){installHelp.style.display='block';installButton.onclick=()=>{installHelp.style.display='block';};}
+else{
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;});
+  installButton.onclick=async()=>{
+    if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;}
+    else installHelp.style.display='block';
+  };
+}
+if('serviceWorker'in navigator && (location.protocol==='https:' || location.hostname==='localhost')){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(err=>console.log('SW:',err)));
+}
 </script></body></html>
