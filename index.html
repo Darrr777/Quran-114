@@ -1,427 +1,77 @@
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Аль-Куръан — 114 сур</title>
-
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102f28"><meta name="description" content="Нур — время намаза, Коран, азкары и хадис дня">
+<link rel="manifest" href="manifest.json"><title>Нур — نور</title>
 <style>
-:root {
-  --bg: #f5f7f2;
-  --card: #ffffff;
-  --ink: #18352d;
-  --green: #174b3e;
-  --gold: #c49a45;
-  --line: #e4eae3;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: Arial, sans-serif;
-}
-
-header {
-  background: linear-gradient(130deg,#10392f,#23624d);
-  color: white;
-  padding: 35px 20px;
-  text-align: center;
-}
-
-header h1 {
-  font-family: Georgia, serif;
-  font-size: 38px;
-}
-
-header p { color: #d5e5dc; }
-
-main {
-  max-width: 1000px;
-  margin: 25px auto;
-  padding: 0 15px;
-}
-
-.toolbar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-input, select {
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  font-size: 15px;
-}
-
-input { flex: 1; min-width: 0; }
-
-.layout {
-  display: grid;
-  grid-template-columns: 0.85fr 1.5fr;
-  gap: 15px;
-}
-
-.panel {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 15px;
-  overflow: hidden;
-}
-
-.panel h2 {
-  padding: 15px;
-  margin: 0;
-  border-bottom: 1px solid var(--line);
-}
-
-#surahList {
-  max-height: 70vh;
-  overflow-y: auto;
-  padding: 8px;
-}
-
-.surah {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-align: left;
-  padding: 12px;
-  border: 0;
-  background: transparent;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.surah:hover,
-.surah.active {
-  background: #edf4ee;
-}
-
-.num {
-  padding: 10px;
-  background: #edf4ee;
-  border-radius: 8px;
-}
-
-.surah strong {
-  display: block;
-}
-
-.surah small {
-  color: #718078;
-}
-
-.ar {
-  margin-left: auto;
-  font-size: 21px;
-}
-
-#reader { padding: 20px; }
-
-.reader-head {
-  text-align: center;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 15px;
-}
-
-.reader-head h2 {
-  font-family: Georgia, serif;
-  font-size: 27px;
-}
-
-.bism {
-  text-align: center;
-  direction: rtl;
-  font-size: 28px;
-  color: var(--green);
-  margin: 20px 0;
-}
-
-.ayah {
-  padding: 18px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.arabic {
-  direction: rtl;
-  text-align: right;
-  font-family: "Times New Roman", serif;
-  font-size: 30px;
-  line-height: 2;
-}
-
-.ayahnum {
-  color: var(--gold);
-  font-size: 15px;
-}
-
-.translation {
-  color: #64736b;
-  line-height: 1.8;
-  margin-top: 10px;
-}
-
-.empty {
-  text-align: center;
-  padding: 50px 15px;
-  color: #718078;
-}
-
-@media(max-width:720px) {
-  .layout { grid-template-columns: 1fr; }
-  #surahList { max-height: 35vh; }
-  .arabic { font-size: 26px; }
-  .toolbar { flex-wrap: wrap; }
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <div style="color:#e2c47e;font-size:25px">
-    ۞ ۞ ۞
-  </div>
-  <h1>القرآن الكريم</h1>
-  <p>Священный Коран · Все 114 сур</p>
-</header>
-
-<main>
-
-<div class="toolbar">
-  <input
-    id="search"
-    type="search"
-    placeholder="Найти суру..."
-  >
-
-  <select id="sort">
-    <option value="asc">По порядку</option>
-    <option value="desc">Обратный порядок</option>
-  </select>
-</div>
-
-<div class="layout">
-
-<section class="panel">
-  <h2>Список сур · 114</h2>
-  <div id="surahList"></div>
-</section>
-
-<section class="panel">
-  <div id="reader">
-    <div class="empty">
-      <h2>۞</h2>
-      <h3>Выберите суру</h3>
-      <p>Нажмите на суру, чтобы открыть аяты.</p>
-    </div>
-  </div>
-</section>
-
-</div>
-</main>
-
+:root{--bg:#0d211d;--p:#15352d;--gold:#d6b56d;--t:#f4f2e9;--m:#b6c6bd;--l:#315448}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#173b30,#0d211d 65%);color:var(--t);font-family:system-ui,-apple-system,sans-serif}
+header{text-align:center;padding:23px;border-bottom:1px solid var(--l)}.logo{font:34px Georgia;color:var(--gold)}.muted,.note{color:var(--m);font-size:13px;line-height:1.55}
+main{max-width:1000px;margin:auto;padding:14px 14px 70px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;position:sticky;top:0;background:#0d211dee;padding:9px 0;z-index:4}
+button,select,input{font:inherit;border-radius:11px}.tab{border:1px solid var(--l);background:var(--p);color:var(--m);padding:11px 3px;cursor:pointer;font-size:13px}.tab.active{background:var(--gold);color:#182b24;font-weight:700}
+.page{display:none}.page.active{display:block}.card{background:linear-gradient(145deg,#183b31,#122e27);border:1px solid var(--l);border-radius:18px;padding:17px;margin:10px 0}
+h2{font-size:22px;color:var(--gold);margin:4px 0 14px}h3{margin:4px 0 8px}p{line-height:1.65}
+select,input{background:#0e2821;color:var(--t);border:1px solid var(--l);padding:11px;width:100%}.row{display:flex;gap:9px;align-items:center}.row>*{flex:1;min-width:0}
+.primary{background:var(--gold);color:#1a2d25;border:0;padding:12px 16px;font-weight:700}.secondary{background:#21483b;color:var(--t);border:1px solid var(--l);padding:10px 13px}
+.hero{text-align:center;padding:15px}.time{font-size:43px;color:var(--gold);font-weight:700}.prayers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.prayer{background:#0f2a23;border:1px solid var(--l);border-radius:13px;padding:12px 5px;text-align:center}.prayer b{display:block;color:var(--gold);font-size:12px}.prayer strong{display:block;font-size:20px;margin-top:5px}
+.arabic{font:29px/2 "Times New Roman",serif;direction:rtl;text-align:right;margin:12px 0}.translation{color:#d0ddd5;line-height:1.75;font-size:14px}
+.list{display:grid;gap:8px}.surah{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#102b24;color:var(--t);border:1px solid var(--l);padding:12px;border-radius:12px;cursor:pointer}.num{width:34px;height:34px;display:grid;place-items:center;border:1px solid #557565;border-radius:10px;color:var(--gold);flex-shrink:0}.arname{margin-left:auto;font:22px "Times New Roman";direction:rtl}
+#surahReader{display:none}.ayah,.dhikr{padding:13px 0;border-bottom:1px solid var(--l)}.counter{font-size:54px;text-align:center;color:var(--gold);font-weight:700;margin:8px}audio{width:100%;margin:12px 0}footer{text-align:center;color:#8fa69a;font-size:11px;padding:15px}
+@media(min-width:760px){.prayers{grid-template-columns:repeat(6,1fr)}.card{padding:22px}}
+</style></head><body>
+<header><div class="logo">نُور · НУР</div><div class="muted">Твой ежедневный спутник в поклонении</div></header>
+<main><nav class="tabs">
+<button class="tab active" data-page="prayer">🕌 Намаз</button><button class="tab" data-page="quran">📖 Коран</button><button class="tab" data-page="azkar">🤲 Азкары</button><button class="tab" data-page="hadith">☀️ Хадис</button>
+</nav>
+<section id="prayer" class="page active"><div class="card"><h2>Время намаза</h2><div class="row"><select id="city"></select><button class="secondary" id="refreshPrayer">Обновить</button></div>
+<p class="muted" id="todayDate">Загрузка даты…</p><div class="hero"><div class="muted">Следующий намаз</div><h2 id="nextName">—</h2><div class="time" id="nextTime">--:--</div><div class="muted" id="countdown">Загружаем расписание…</div></div>
+<div class="prayers" id="prayerGrid"></div><p class="note">Время рассчитывается через AlAdhan API. Сверяйте расписание с местной мечетью ДУМК: методы и настройки могут отличаться.</p></div>
+<div class="card"><h3>Настройки расчёта</h3><div class="row"><label class="muted">Метод<select id="method"><option value="14" selected>ДУМ России (14)</option><option value="3">Мусульманская лига мира (3)</option><option value="2">ISNA (2)</option><option value="4">Умм аль-Кура (4)</option></select></label><label class="muted">Аср<select id="school"><option value="1" selected>Ханафи</option><option value="0">Шафии / Малики / Ханбали</option></select></label></div></div></section>
+<section id="quran" class="page"><div class="card" id="quranHome"><h2>Священный Коран</h2><p class="muted">114 сур · арабский текст · русский перевод · аудио</p><input id="surahSearch" placeholder="Поиск суры…"><div class="list" id="surahList" style="margin-top:12px">Загружаем список сур…</div></div>
+<div class="card" id="surahReader"><button class="secondary" id="backSurahs">← Все суры</button><h2 id="surahTitle"></h2><label class="muted">Чтец<select id="reciter"><option value="ar.minshawi">Мухаммад Сиддик аль-Миншави — Мурattal</option><option value="ar.minshawimujawwad">Аль-Миншави — Муджаввад</option><option value="ar.husary">Махмуд аль-Хусари</option><option value="ar.alafasy">Мишари аль-Афаси</option><option value="ar.sudais">Абдуррахман ас-Судайс</option></select></label><audio id="audio" controls></audio><div id="ayahList">Выберите суру.</div></div></section>
+<section id="azkar" class="page"><div class="card"><h2>Азкары и зикры</h2><div class="row"><button class="tab active" id="morningBtn">Утренние</button><button class="tab" id="eveningBtn">Вечерние</button><button class="tab" id="afterBtn">После намаза</button></div><p class="note">Тексты и ссылки на источники нужно сверить с проверенным изданием азкаров перед широким распространением.</p><div id="dhikrList"></div></div>
+<div class="card"><h3 class="center">Счётчик тасбиха</h3><div class="counter" id="count">0</div><div class="center"><button class="primary" id="countBtn">＋ Добавить</button> <button class="secondary" id="resetCount">Сбросить</button></div><p class="muted center">Счётчик сохраняется на этом устройстве.</p></div></section>
+<section id="hadith" class="page"><div class="card"><h2>Хадис дня</h2><p class="muted" id="hadithDate"></p><div class="arabic" id="hadithArabic"></div><div class="translation" id="hadithText"></div><p class="muted" id="hadithSource"></p><p class="note">Подборка из известных сборников «Сахих аль-Бухари» и «Сахих Муслим». Нумерация может различаться в изданиях.</p></div></section>
+<footer>НУР · نور · Для работы с расписанием, текстом и аудио требуется интернет.</footer></main>
 <script>
-
-const API = "https://api.alquran.cloud/v1";
-
-let surahs = [];
-let current = 0;
-
-const list = document.getElementById("surahList");
-const reader = document.getElementById("reader");
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(
-    /[&<>"']/g,
-    c => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    }[c])
-  );
-}
-
-// Загружаем все 114 сур
-async function init() {
-  try {
-    const response = await fetch(API + "/surah");
-    const data = await response.json();
-
-    surahs = data.data;
-
-    renderList();
-
-  } catch (error) {
-    list.innerHTML = "Ошибка загрузки. Проверьте интернет.";
-  }
-}
-
-// Показываем список сур
-function renderList() {
-
-  const query = document
-    .getElementById("search")
-    .value.toLowerCase();
-
-  const sort = document.getElementById("sort").value;
-
-  const ordered = [...surahs].sort((a,b) =>
-    sort === "asc"
-      ? a.number - b.number
-      : b.number - a.number
-  );
-
-  const filtered = ordered.filter(s =>
-    String(s.number).includes(query) ||
-    s.name.includes(query) ||
-    s.englishName.toLowerCase().includes(query) ||
-    s.englishNameTranslation.toLowerCase().includes(query)
-  );
-
-  list.innerHTML = filtered.map(s => `
-    <button
-      class="surah ${current === s.number ? "active" : ""}"
-      data-id="${s.number}"
-    >
-      <span class="num">${s.number}</span>
-
-      <span>
-        <strong>${escapeHTML(s.englishNameTranslation)}</strong>
-        <small>${escapeHTML(s.englishName)}</small>
-      </span>
-
-      <span class="ar">${escapeHTML(s.name)}</span>
-    </button>
-  `).join("");
-
-  list.querySelectorAll("button").forEach(button => {
-    button.addEventListener("click", () => {
-      openSurah(Number(button.dataset.id));
-    });
-  });
-}
-
-// Открываем выбранную суру
-async function openSurah(number) {
-
-  current = number;
-  renderList();
-
-  reader.innerHTML = `
-    <div class="empty">Загрузка суры...</div>
-  `;
-
-  try {
-
-    const [arabicResponse, russianResponse] =
-      await Promise.all([
-
-        fetch(`${API}/surah/${number}/quran-uthmani`),
-
-        fetch(`${API}/surah/${number}/ru.kuliev`)
-
-      ]);
-
-    if (!arabicResponse.ok) {
-      throw new Error("Ошибка загрузки");
-    }
-
-    const arabicData =
-      (await arabicResponse.json()).data;
-
-    const russianData = russianResponse.ok
-      ? (await russianResponse.json()).data
-      : null;
-
-    const info = surahs.find(s => s.number === number);
-
-    const translations = russianData?.ayahs || [];
-
-    reader.innerHTML = `
-      <div class="reader-head">
-        <h2>
-          ${escapeHTML(info.englishNameTranslation)}
-          · ${escapeHTML(info.name)}
-        </h2>
-
-        <p>
-          ${number} сура ·
-          ${info.revelationType === "Meccan"
-            ? "Мекканская"
-            : "Мединская"}
-          · ${arabicData.numberOfAyahs} аятов
-        </p>
-      </div>
-
-      ${
-        number !== 1 && number !== 9
-          ? `<div class="bism">
-              بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-             </div>`
-          : ""
-      }
-
-      <div id="ayahs"></div>
-    `;
-
-    const ayahs = document.getElementById("ayahs");
-
-    ayahs.innerHTML = arabicData.ayahs.map((ayah, i) => `
-
-      <article class="ayah">
-
-        <div class="arabic">
-          ${escapeHTML(ayah.text)}
-          <span class="ayahnum">
-            ۝ ${ayah.numberInSurah}
-          </span>
-        </div>
-
-        ${
-          translations[i]
-            ? `<div class="translation">
-                ${escapeHTML(translations[i].text)}
-               </div>`
-            : ""
-        }
-
-      </article>
-
-    `).join("");
-
-  } catch (error) {
-
-    reader.innerHTML = `
-      <div class="empty">
-        Не удалось загрузить суру.
-        Проверьте интернет и попробуйте снова.
-      </div>
-    `;
-
-  }
-}
-
-document
-  .getElementById("search")
-  .addEventListener("input", renderList);
-
-document
-  .getElementById("sort")
-  .addEventListener("change", renderList);
-
-// Запуск сайта
-init();
-
-</script>
-
-</body>
-</html>
+const $=id=>document.getElementById(id);
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===b.dataset.page));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x===b));});
+const cities=["Астана","Алматы","Шымкент","Актобе","Атырау","Актау","Караганда","Костанай","Кызылорда","Павлодар","Петропавловск","Семей","Усть-Каменогорск","Тараз","Туркестан","Уральск","Талдыкорган","Кокшетау","Жезказган","Экибастуз","Темиртау","Рудный","Жанаозен","Балхаш","Кентау","Риддер","Степногорск","Аксай","Арыс","Сатпаев","Щучинск","Кульсары","Лисаковск","Шахтинск","Сарань","Аркалык","Аягоз","Жаркент","Конаев","Талгар","Есик"];
+cities.forEach(c=>$('city').add(new Option(c,c)));$('city').value="Атырау";
+let prayerData=null;
+async function loadPrayer(){ $('prayerGrid').textContent='Загрузка…';$('countdown').textContent='Получаем расписание…';try{
+const d=new Date(),date=[String(d.getDate()).padStart(2,'0'),String(d.getMonth()+1).padStart(2,'0'),d.getFullYear()].join('-');
+const u=`https://api.aladhan.com/v1/timingsByCity/${date}?city=${encodeURIComponent($('city').value)}&country=Kazakhstan&method=${$('method').value}&school=${$('school').value}`;
+const r=await fetch(u),j=await r.json();if(j.code!==200)throw Error();prayerData=j.data.timings;
+$('todayDate').textContent=`${j.data.date.readable} · ${j.data.date.hijri.day} ${j.data.date.hijri.month.ar} ${j.data.date.hijri.year} هـ · ${$('city').value}`;
+const ks=[['Фаджр','Fajr'],['Восход','Sunrise'],['Зухр','Dhuhr'],['Аср','Asr'],['Магриб','Maghrib'],['Иша','Isha']];
+$('prayerGrid').innerHTML=ks.map(([n,k])=>`<div class="prayer"><b>${n}</b><strong>${prayerData[k]?.split(' ')[0]||'—'}</strong></div>`).join('');updateNext();
+}catch(e){$('prayerGrid').textContent='Не удалось получить время. Проверьте интернет или город.';}}
+function updateNext(){if(!prayerData)return;const ks=[['Фаджр','Fajr'],['Зухр','Dhuhr'],['Аср','Asr'],['Магриб','Maghrib'],['Иша','Isha']],now=new Date();let name,target;
+for(const [n,k] of ks){let [h,m]=prayerData[k].split(' ')[0].split(':').map(Number),t=new Date();t.setHours(h,m,0,0);if(t>now){name=n;target=t;break;}}
+if(!target){let [h,m]=prayerData.Fajr.split(' ')[0].split(':').map(Number);target=new Date();target.setDate(target.getDate()+1);target.setHours(h,m,0,0);name='Фаджр';}
+let ms=target-now,hh=Math.floor(ms/36e5),mm=Math.floor(ms%36e5/6e4),ss=Math.floor(ms%6e4/1e3);$('nextName').textContent=name;$('nextTime').textContent=target.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});$('countdown').textContent=`Через ${hh} ч ${mm} мин ${ss} сек`;}
+$('refreshPrayer').onclick=loadPrayer;$('city').onchange=loadPrayer;$('method').onchange=loadPrayer;$('school').onchange=loadPrayer;loadPrayer();setInterval(updateNext,1000);
+let allSurahs=[];
+async function loadSurahs(){try{let j=await(await fetch('https://api.alquran.cloud/v1/surah')).json();allSurahs=j.data;renderSurahs();}catch(e){$('surahList').textContent='Не удалось загрузить суры. Проверьте интернет.';}}
+function renderSurahs(){let q=$('surahSearch').value.toLowerCase();$('surahList').innerHTML=allSurahs.filter(s=>String(s.number).includes(q)||s.englishName.toLowerCase().includes(q)||s.englishNameTranslation.toLowerCase().includes(q)||s.name.includes(q)).map(s=>`<button class="surah" data-id="${s.number}"><span class="num">${s.number}</span><span><b>${s.englishNameTranslation}</b><div class="muted">${s.englishName}</div></span><span class="arname">${s.name}</span></button>`).join('');$('surahList').querySelectorAll('button').forEach(b=>b.onclick=()=>openSurah(+b.dataset.id));}
+$('surahSearch').oninput=renderSurahs;
+async function openSurah(n){$('quranHome').style.display='none';$('surahReader').style.display='block';$('ayahList').textContent='Загрузка аятов…';try{
+let [a,t]=await Promise.all([fetch(`https://api.alquran.cloud/v1/surah/${n}/quran-uthmani`),fetch(`https://api.alquran.cloud/v1/surah/${n}/ru.kuliev`)]),ar=(await a.json()).data,ru=(await t.json()).data;
+$('surahTitle').textContent=`${ar.name} · ${ar.englishNameTranslation} (${n})`;setAudio(n);
+$('ayahList').innerHTML=ar.ayahs.map((v,i)=>`<article class="ayah"><div class="arabic">${v.text} <span style="color:var(--gold);font-size:16px">۝${v.numberInSurah}</span></div><div class="translation">${ru.ayahs[i]?.text||''}</div></article>`).join('');
+}catch(e){$('ayahList').textContent='Не удалось загрузить суру.';}}
+function setAudio(n){$('audio').src=`https://cdn.islamic.network/quran/audio-surah/128/${$('reciter').value}/${n}.mp3`;}
+$('reciter').onchange=()=>{let n=Number($('surahTitle').textContent.match(/\((\d+)\)/)?.[1]);if(n)setAudio(n);};
+$('backSurahs').onclick=()=>{$('surahReader').style.display='none';$('quranHome').style.display='block';$('audio').pause();};loadSurahs();
+const az={
+morning:[["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ","Мы вступили в утро, и власть принадлежит Аллаху. Хвала Аллаху.",1,"Сахих Муслим, 2723 (часть зикра)"],["اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ","О Аллах, с Твоей помощью мы встречаем утро и вечер, живём и умираем, и к Тебе воскресение.",1,"Абу Дауд, 5068; ат-Тирмизи, 3391"],["سُبْحَانَ اللَّهِ وَبِحَمْدِهِ","Пречист Аллах и хвала Ему.",100,"Аль-Бухари, 6405; Муслим, 2691"]],
+evening:[["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ","Мы вступили в вечер, и власть принадлежит Аллаху. Хвала Аллаху.",1,"Сахих Муслим, 2723 (часть зикра)"],["اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ","О Аллах, с Твоей помощью мы встречаем вечер и утро, живём и умираем, и к Тебе возвращение.",1,"Абу Дауд, 5068; ат-Тирмизи, 3391"],["أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ","Прибегаю к совершенным словам Аллаха от зла того, что Он сотворил.",3,"Сахих Муслим, 2708"]],
+after:[["أَسْتَغْفِرُ اللَّهَ","Прошу прощения у Аллаха.",3,"Сахих Муслим, 591"],["اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ","О Аллах, Ты — Мир, и от Тебя мир. Благословен Ты, Обладатель величия и щедрости.",1,"Сахих Муслим, 591"],["سُبْحَانَ اللَّهِ","Пречист Аллах.",33,"Аль-Бухари, 843; Муслим, 595"],["الْحَمْدُ لِلَّهِ","Хвала Аллаху.",33,"Аль-Бухари, 843; Муслим, 595"],["اللَّهُ أَكْبَرُ","Аллах Велик.",34,"Аль-Бухари, 843; Муслим, 595"]]};
+let active='morning';function renderAz(){ $('dhikrList').innerHTML=az[active].map(x=>`<div class="dhikr"><div class="arabic">${x[0]}</div><div class="translation">${x[1]}</div><p class="muted">Количество: ${x[2]} · ${x[3]}</p></div>`).join('');}
+[['morningBtn','morning'],['eveningBtn','evening'],['afterBtn','after']].forEach(([id,k])=>$(id).onclick=()=>{active=k;renderAz();});renderAz();
+let count=Number(localStorage.getItem('noorTasbih')||0);function draw(){ $('count').textContent=count;localStorage.setItem('noorTasbih',count);}$('countBtn').onclick=()=>{count++;draw();};$('resetCount').onclick=()=>{count=0;draw();};draw();
+const hadiths=[["إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ","Поистине, дела оцениваются только по намерениям.","Сахих аль-Бухари, 1; Сахих Муслим, 1907"],["الدِّينُ النَّصِيحَةُ","Религия — это искреннее отношение (наставление).","Сахих Муслим, 55"],["مَنْ لَا يَرْحَمُ لَا يُرْحَمُ","К тому, кто не проявляет милосердия, не проявят милосердия.","Сахих аль-Бухари, 6013; Сахих Муслим, 2319"],["الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ","Мусульманин — тот, от языка и рук которого другие мусульмане находятся в безопасности.","Сахих аль-Бухари, 10; Сахих Муслим, 40"],["لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ","Не уверует никто из вас по-настоящему, пока не станет желать брату того же, чего желает себе.","Сахих аль-Бухари, 13; Сахих Муслим, 45"],["مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ","Пусть тот, кто верует в Аллаха и Последний день, говорит благое или молчит.","Сахих аль-Бухари, 6018; Сахих Муслим, 47"],["الطُّهُورُ شَطْرُ الْإِيمَانِ","Очищение — половина веры.","Сахих Муслим, 223"]];
+let h=hadiths[Math.floor(Date.now()/86400000)%hadiths.length];$('hadithDate').textContent=new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});$('hadithArabic').textContent=h[0];$('hadithText').textContent=h[1];$('hadithSource').textContent=h[2];
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script></body></html>
