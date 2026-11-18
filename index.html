@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Аль-Куръан — 114 сур</title>
+
+<style>
+:root {
+  --bg: #f5f7f2;
+  --card: #ffffff;
+  --ink: #18352d;
+  --green: #174b3e;
+  --gold: #c49a45;
+  --line: #e4eae3;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background: linear-gradient(130deg,#10392f,#23624d);
+  color: white;
+  padding: 35px 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-family: Georgia, serif;
+  font-size: 38px;
+}
+
+header p { color: #d5e5dc; }
+
+main {
+  max-width: 1000px;
+  margin: 25px auto;
+  padding: 0 15px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+input, select {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+input { flex: 1; min-width: 0; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 0.85fr 1.5fr;
+  gap: 15px;
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.panel h2 {
+  padding: 15px;
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+#surahList {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.surah {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.surah:hover,
+.surah.active {
+  background: #edf4ee;
+}
+
+.num {
+  padding: 10px;
+  background: #edf4ee;
+  border-radius: 8px;
+}
+
+.surah strong {
+  display: block;
+}
+
+.surah small {
+  color: #718078;
+}
+
+.ar {
+  margin-left: auto;
+  font-size: 21px;
+}
+
+#reader { padding: 20px; }
+
+.reader-head {
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 15px;
+}
+
+.reader-head h2 {
+  font-family: Georgia, serif;
+  font-size: 27px;
+}
+
+.bism {
+  text-align: center;
+  direction: rtl;
+  font-size: 28px;
+  color: var(--green);
+  margin: 20px 0;
+}
+
+.ayah {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.arabic {
+  direction: rtl;
+  text-align: right;
+  font-family: "Times New Roman", serif;
+  font-size: 30px;
+  line-height: 2;
+}
+
+.ayahnum {
+  color: var(--gold);
+  font-size: 15px;
+}
+
+.translation {
+  color: #64736b;
+  line-height: 1.8;
+  margin-top: 10px;
+}
+
+.empty {
+  text-align: center;
+  padding: 50px 15px;
+  color: #718078;
+}
+
+@media(max-width:720px) {
+  .layout { grid-template-columns: 1fr; }
+  #surahList { max-height: 35vh; }
+  .arabic { font-size: 26px; }
+  .toolbar { flex-wrap: wrap; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div style="color:#e2c47e;font-size:25px">
+    ۞ ۞ ۞
+  </div>
+  <h1>القرآن الكريم</h1>
+  <p>Священный Коран · Все 114 сур</p>
+</header>
+
+<main>
+
+<div class="toolbar">
+  <input
+    id="search"
+    type="search"
+    placeholder="Найти суру..."
+  >
+
+  <select id="sort">
+    <option value="asc">По порядку</option>
+    <option value="desc">Обратный порядок</option>
+  </select>
+</div>
+
+<div class="layout">
+
+<section class="panel">
+  <h2>Список сур · 114</h2>
+  <div id="surahList"></div>
+</section>
+
+<section class="panel">
+  <div id="reader">
+    <div class="empty">
+      <h2>۞</h2>
+      <h3>Выберите суру</h3>
+      <p>Нажмите на суру, чтобы открыть аяты.</p>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<script>
+
+const API = "https://api.alquran.cloud/v1";
+
+let surahs = [];
+let current = 0;
+
+const list = document.getElementById("surahList");
+const reader = document.getElementById("reader");
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    c => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[c])
+  );
+}
+
+// Загружаем все 114 сур
+async function init() {
+  try {
+    const response = await fetch(API + "/surah");
+    const data = await response.json();
+
+    surahs = data.data;
+
+    renderList();
+
+  } catch (error) {
+    list.innerHTML = "Ошибка загрузки. Проверьте интернет.";
+  }
+}
+
+// Показываем список сур
+function renderList() {
+
+  const query = document
+    .getElementById("search")
+    .value.toLowerCase();
+
+  const sort = document.getElementById("sort").value;
+
+  const ordered = [...surahs].sort((a,b) =>
+    sort === "asc"
+      ? a.number - b.number
+      : b.number - a.number
+  );
+
+  const filtered = ordered.filter(s =>
+    String(s.number).includes(query) ||
+    s.name.includes(query) ||
+    s.englishName.toLowerCase().includes(query) ||
+    s.englishNameTranslation.toLowerCase().includes(query)
+  );
+
+  list.innerHTML = filtered.map(s => `
+    <button
+      class="surah ${current === s.number ? "active" : ""}"
+      data-id="${s.number}"
+    >
+      <span class="num">${s.number}</span>
+
+      <span>
+        <strong>${escapeHTML(s.englishNameTranslation)}</strong>
+        <small>${escapeHTML(s.englishName)}</small>
+      </span>
+
+      <span class="ar">${escapeHTML(s.name)}</span>
+    </button>
+  `).join("");
+
+  list.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", () => {
+      openSurah(Number(button.dataset.id));
+    });
+  });
+}
+
+// Открываем выбранную суру
+async function openSurah(number) {
+
+  current = number;
+  renderList();
+
+  reader.innerHTML = `
+    <div class="empty">Загрузка суры...</div>
+  `;
+
+  try {
+
+    const [arabicResponse, russianResponse] =
+      await Promise.all([
+
+        fetch(`${API}/surah/${number}/quran-uthmani`),
+
+        fetch(`${API}/surah/${number}/ru.kuliev`)
+
+      ]);
+
+    if (!arabicResponse.ok) {
+      throw new Error("Ошибка загрузки");
+    }
+
+    const arabicData =
+      (await arabicResponse.json()).data;
+
+    const russianData = russianResponse.ok
+      ? (await russianResponse.json()).data
+      : null;
+
+    const info = surahs.find(s => s.number === number);
+
+    const translations = russianData?.ayahs || [];
+
+    reader.innerHTML = `
+      <div class="reader-head">
+        <h2>
+          ${escapeHTML(info.englishNameTranslation)}
+          · ${escapeHTML(info.name)}
+        </h2>
+
+        <p>
+          ${number} сура ·
+          ${info.revelationType === "Meccan"
+            ? "Мекканская"
+            : "Мединская"}
+          · ${arabicData.numberOfAyahs} аятов
+        </p>
+      </div>
+
+      ${
+        number !== 1 && number !== 9
+          ? `<div class="bism">
+              بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+             </div>`
+          : ""
+      }
+
+      <div id="ayahs"></div>
+    `;
+
+    const ayahs = document.getElementById("ayahs");
+
+    ayahs.innerHTML = arabicData.ayahs.map((ayah, i) => `
+
+      <article class="ayah">
+
+        <div class="arabic">
+          ${escapeHTML(ayah.text)}
+          <span class="ayahnum">
+            ۝ ${ayah.numberInSurah}
+          </span>
+        </div>
+
+        ${
+          translations[i]
+            ? `<div class="translation">
+                ${escapeHTML(translations[i].text)}
+               </div>`
+            : ""
+        }
+
+      </article>
+
+    `).join("");
+
+  } catch (error) {
+
+    reader.innerHTML = `
+      <div class="empty">
+        Не удалось загрузить суру.
+        Проверьте интернет и попробуйте снова.
+      </div>
+    `;
+
+  }
+}
+
+document
+  .getElementById("search")
+  .addEventListener("input", renderList);
+
+document
+  .getElementById("sort")
+  .addEventListener("change", renderList);
+
+// Запуск сайта
+init();
+
+</script>
+
+</body>
+</html>
